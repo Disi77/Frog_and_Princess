@@ -21,7 +21,7 @@ PRINCESS_HEIGHT = 150
 DONUTS = []
 DONUTS_COORDINATES = []
 
-SCORE = [0,3]
+SCORE = [0, 3]
 FONT_SIZE = 42
 TEXT_INDENTATION = 30
 
@@ -29,25 +29,22 @@ GAME = ['menu']
 pressed_keys = set()
 
 
-
 # DEFINITIONS of FUNCTIONS
-# ------------------------------------------------------------------------------
-
 def on_key_press(symbol, modifiers):
     '''
     On key press - move left, right, up or down.
     Or pres ENTER to go between GAME and MENU.
     '''
     if symbol == key.LEFT:
-        pressed_keys.add(('left',0))
+        pressed_keys.add(('left', 0))
     if symbol == key.RIGHT:
-        pressed_keys.add(('right',0))
+        pressed_keys.add(('right', 0))
     if symbol == key.UP:
-        pressed_keys.add(('up',0))
+        pressed_keys.add(('up', 0))
     if symbol == key.DOWN:
-        pressed_keys.add(('down',0))
+        pressed_keys.add(('down', 0))
     if symbol == key.ENTER:
-        pressed_keys.add(('enter',0))
+        pressed_keys.add(('enter', 0))
 
 
 def on_key_release(symbol, modifiers):
@@ -55,13 +52,13 @@ def on_key_release(symbol, modifiers):
     On key release - stop move.
     '''
     if symbol == key.LEFT:
-        pressed_keys.discard(('left',0))
+        pressed_keys.discard(('left', 0))
     if symbol == key.RIGHT:
-        pressed_keys.discard(('right',0))
+        pressed_keys.discard(('right', 0))
     if symbol == key.UP:
-        pressed_keys.discard(('up',0))
+        pressed_keys.discard(('up', 0))
     if symbol == key.DOWN:
-        pressed_keys.discard(('down',0))
+        pressed_keys.discard(('down', 0))
 
 
 def reset():
@@ -88,17 +85,18 @@ def restore_conditions(t):
     Lifes = 0. Press Enter to go to the Menu.
 
     When GAME = gotcha:
-    The Princess catched The Frog. One life down. Press enter to continue in game.
+    The Princess catched The Frog. One life down.
+    Press enter to continue in game.
     '''
     if GAME[0] == 'game':
         # Princess move
         princess_right.x = princess_right.x + t * SPEED * SPEED_KOEF[0]
         if princess_right.x > WIDTH:
-            princess_right.y = choice([10,100,200,300,400])
+            princess_right.y = choice([10, 100, 200, 300, 400])
             princess_right.x = -150 + t * SPEED * SPEED_KOEF[0]
         princess_left.x = princess_left.x - t * SPEED * SPEED_KOEF[0]
         if princess_left.x < -150:
-            princess_left.y = HEIGHT - PRINCESS_HEIGHT - choice([10,100,200,300,400])
+            princess_left.y = HEIGHT - PRINCESS_HEIGHT - choice([10, 100, 200, 300, 400])
             princess_left.x = WIDTH - t * SPEED * SPEED_KOEF[0]
 
         # Frog move
@@ -124,7 +122,7 @@ def restore_conditions(t):
         # When Princess catches Frog
         if (princess_left.x - FROG_WIDTH - 10) < frog.x < (princess_left.x + PRINCESS_WIDTH - 10) \
            and (princess_left.y - FROG_HEIGHT + 10) < frog.y < (princess_left.y + PRINCESS_HEIGHT - 10):
-            SCORE[1] -=1 # One life down
+            SCORE[1] -= 1  # One life down
             if SCORE[1] == 0:
                 GAME[0] = 'game over'
             else:
@@ -132,19 +130,19 @@ def restore_conditions(t):
 
         if (princess_right.x - FROG_WIDTH - 10) < frog.x < (princess_right.x + PRINCESS_WIDTH - 10) \
            and (princess_right.y - FROG_HEIGHT + 10) < frog.y < (princess_right.y + PRINCESS_HEIGHT - 10):
-            SCORE[1] -=1 # One life down
+            SCORE[1] -= 1  # One life down
             if SCORE[1] == 0:
                 GAME[0] = 'game over'
             else:
                 GAME[0] = 'gotcha'
 
         # When Frog eats Donut
-        for x,y in DONUTS_COORDINATES:
+        for x, y in DONUTS_COORDINATES:
             if (x - FROG_WIDTH - 20) < frog.x < (x+30) and (y - FROG_HEIGHT - 20) < frog.y < (y+20):
-                SCORE[0] +=1
-                if SCORE[0] % 10 == 0: # When Frog eats 10 Donuts = One life up
-                    SCORE[1] +=1
-                    SPEED_KOEF[0] += 0.1 # When Frog eats 10 Donuts = Princess speed up
+                SCORE[0] += 1
+                if SCORE[0] % 10 == 0:  # When Frog eats 10 Donuts = One life up
+                    SCORE[1] += 1
+                    SPEED_KOEF[0] += 0.1  # When Frog eats 10 Donuts = Princess speed up
                 del DONUTS[DONUTS_COORDINATES.index((x,y))]
                 del DONUTS_COORDINATES[DONUTS_COORDINATES.index((x,y))]
 
@@ -155,22 +153,22 @@ def restore_conditions(t):
         # Press ENTER to go to the MENU
         if ('enter', 0) in pressed_keys:
             GAME[0] = 'menu'
-            pressed_keys.discard(('enter',0))
+            pressed_keys.discard(('enter', 0))
 
     if GAME[0] == 'menu':
         # Press ENTER to go to the GAME
         menu.x, menu.y = (WIDTH - menu.width)//2, (HEIGHT - menu.height)//2
         if ('enter', 0) in pressed_keys:
             GAME[0] = 'game'
-            pressed_keys.discard(('enter',0))
+            pressed_keys.discard(('enter', 0))
 
     if GAME[0] == 'gotcha':
         princess_frog_right.x, princess_frog_right.y = HEIGHT//2-100, WIDTH * 0.45
-        gotcha.x, gotcha.y = (WIDTH - gotcha.width)//2, (HEIGHT - gotcha.height)//2
+        gotcha.x, gotcha.y = (WIDTH - gotcha.width)//2, (HEIGHT - gotcha.height) // 2
         if ('enter', 0) in pressed_keys:
             reset()
             GAME[0] = 'game'
-            pressed_keys.discard(('enter',0))
+            pressed_keys.discard(('enter', 0))
 
     if GAME[0] == 'game over':
         wedding.x, wedding.y = (WIDTH - wedding.width)//2, (HEIGHT - wedding.height)//2
@@ -182,7 +180,7 @@ def restore_conditions(t):
             DONUTS.clear()
             DONUTS_COORDINATES.clear()
             GAME[0] = 'menu'
-            pressed_keys.discard(('enter',0))
+            pressed_keys.discard(('enter', 0))
 
 
 def changing_donuts(t):
@@ -192,12 +190,12 @@ def changing_donuts(t):
     if GAME[0] == 'game':
         MAX_DONUTS = 10
         if len(DONUTS) < MAX_DONUTS:
-            donut_image = pyglet.image.load(str('images/donuts/{}.png'.format(choice([1,2,3,4,5,6]))))
+            donut_image = pyglet.image.load(str('images/donuts/{}.png'.format(choice([1, 2, 3, 4, 5, 6]))))
             donut_image.texture.width = 50
             donut_image.texture.height = 50
             x, y = randrange(0, WIDTH-20), randrange(0, HEIGHT-20)
             DONUTS.append(pyglet.sprite.Sprite(donut_image, x, y, batch=batch))
-            DONUTS_COORDINATES.append((x,y))
+            DONUTS_COORDINATES.append((x, y))
 
 
 def draw_text(text, x, y, anchor_x):
@@ -216,13 +214,13 @@ def on_draw():
     window.clear()
     if GAME[0] == 'game':
         draw_text(str(SCORE[0]),
-                      x= WIDTH - TEXT_INDENTATION - 50,
-                      y= HEIGHT - TEXT_INDENTATION - FONT_SIZE,
-                      anchor_x='right')
+                      x = WIDTH - TEXT_INDENTATION - 50,
+                      y = HEIGHT - TEXT_INDENTATION - FONT_SIZE,
+                      anchor_x = 'right')
         draw_text(str(SCORE[1]),
-                      x= TEXT_INDENTATION,
-                      y= HEIGHT - TEXT_INDENTATION - FONT_SIZE,
-                      anchor_x='left')
+                      x = TEXT_INDENTATION,
+                      y = HEIGHT - TEXT_INDENTATION - FONT_SIZE,
+                      anchor_x = 'left')
         heart.draw()
         donuts_plate.draw()
         batch.draw()
@@ -241,6 +239,7 @@ def on_draw():
         gotcha.draw()
         princess_frog_right.draw()
 
+
 def change_frog_image(t):
     frog.image = frog_left_image
     pyglet.clock.schedule_once(change_frog_image_back, 0.5)
@@ -251,16 +250,10 @@ def change_frog_image_back(t):
     pyglet.clock.schedule_once(change_frog_image, 0.5)
 
 
-
 # GAME
-# ------------------------------------------------------------------------------
-
-
 window = pyglet.window.Window(WIDTH, HEIGHT)
 
-
 # Images load
-# ------------------------------------------------------------------------------
 frog_right_image = pyglet.image.load('images/frog_right.png')
 frog_right_image.texture.width = FROG_WIDTH
 frog_right_image.texture.height = FROG_HEIGHT
@@ -318,7 +311,6 @@ window.push_handlers(
     on_key_press=on_key_press,
     on_key_release=on_key_release,
 )
-
 
 pyglet.clock.schedule_once(change_frog_image, 0.5)
 pyglet.clock.schedule_interval(restore_conditions, 1/30)
