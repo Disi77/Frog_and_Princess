@@ -1,4 +1,3 @@
-import math
 from random import randrange, choice
 
 
@@ -143,12 +142,14 @@ def restore_conditions(t):
                 if SCORE[0] % 10 == 0:  # When Frog eats 10 Donuts = One life up
                     SCORE[1] += 1
                     SPEED_KOEF[0] += 0.1  # When Frog eats 10 Donuts = Princess speed up
-                del DONUTS[DONUTS_COORDINATES.index((x,y))]
-                del DONUTS_COORDINATES[DONUTS_COORDINATES.index((x,y))]
+                del DONUTS[DONUTS_COORDINATES.index((x, y))]
+                del DONUTS_COORDINATES[DONUTS_COORDINATES.index((x, y))]
 
         # Image HEART for lifes, Image Donuts on plate for score
-        heart.x, heart.y = TEXT_INDENTATION + 70, HEIGHT - TEXT_INDENTATION - FONT_SIZE
-        donuts_plate.x, donuts_plate.y = WIDTH - 70, HEIGHT - TEXT_INDENTATION - FONT_SIZE
+        heart.x = TEXT_INDENTATION + 70
+        heart.y = HEIGHT - TEXT_INDENTATION - FONT_SIZE
+        donuts_plate.x = WIDTH - 70
+        donuts_plate.y = HEIGHT - TEXT_INDENTATION - FONT_SIZE
 
         # Press ENTER to go to the MENU
         if ('enter', 0) in pressed_keys:
@@ -157,21 +158,25 @@ def restore_conditions(t):
 
     if GAME[0] == 'menu':
         # Press ENTER to go to the GAME
-        menu.x, menu.y = (WIDTH - menu.width)//2, (HEIGHT - menu.height)//2
+        menu.x = (WIDTH - menu.width) // 2
+        menu.y = (HEIGHT - menu.height) // 2
         if ('enter', 0) in pressed_keys:
             GAME[0] = 'game'
             pressed_keys.discard(('enter', 0))
 
     if GAME[0] == 'gotcha':
-        princess_frog_right.x, princess_frog_right.y = HEIGHT//2-100, WIDTH * 0.45
-        gotcha.x, gotcha.y = (WIDTH - gotcha.width)//2, (HEIGHT - gotcha.height) // 2
+        princess_frog_right.x = HEIGHT // 2-100
+        princess_frog_right.y = WIDTH * 0.45
+        gotcha.x = (WIDTH - gotcha.width) // 2
+        gotcha.y = (HEIGHT - gotcha.height) // 2
         if ('enter', 0) in pressed_keys:
             reset()
             GAME[0] = 'game'
             pressed_keys.discard(('enter', 0))
 
     if GAME[0] == 'game over':
-        wedding.x, wedding.y = (WIDTH - wedding.width)//2, (HEIGHT - wedding.height)//2
+        wedding.x = (WIDTH - wedding.width)//2
+        wedding.y = (HEIGHT - wedding.height)//2
         game_over.x = (WIDTH - game_over.width)//2
         SCORE[0] = 0
         SCORE[1] = 3
@@ -191,8 +196,6 @@ def changing_donuts(t):
         MAX_DONUTS = 10
         if len(DONUTS) < MAX_DONUTS:
             donut_image = pyglet.image.load(str('images/donuts/{}.png'.format(choice([1, 2, 3, 4, 5, 6]))))
-            donut_image.texture.width = 50
-            donut_image.texture.height = 50
             x, y = randrange(0, WIDTH-20), randrange(0, HEIGHT-20)
             DONUTS.append(pyglet.sprite.Sprite(donut_image, x, y, batch=batch))
             DONUTS_COORDINATES.append((x, y))
@@ -214,13 +217,13 @@ def on_draw():
     window.clear()
     if GAME[0] == 'game':
         draw_text(str(SCORE[0]),
-                      x = WIDTH - TEXT_INDENTATION - 50,
-                      y = HEIGHT - TEXT_INDENTATION - FONT_SIZE,
-                      anchor_x = 'right')
+                  x=WIDTH - TEXT_INDENTATION - 50,
+                  y=HEIGHT - TEXT_INDENTATION - FONT_SIZE,
+                  anchor_x='right')
         draw_text(str(SCORE[1]),
-                      x = TEXT_INDENTATION,
-                      y = HEIGHT - TEXT_INDENTATION - FONT_SIZE,
-                      anchor_x = 'left')
+                  x=TEXT_INDENTATION,
+                  y=HEIGHT - TEXT_INDENTATION - FONT_SIZE,
+                  anchor_x='left')
         heart.draw()
         donuts_plate.draw()
         batch.draw()
@@ -255,42 +258,26 @@ window = pyglet.window.Window(WIDTH, HEIGHT)
 
 # Images load
 frog_right_image = pyglet.image.load('images/frog_right.png')
-frog_right_image.texture.width = FROG_WIDTH
-frog_right_image.texture.height = FROG_HEIGHT
 frog = pyglet.sprite.Sprite(frog_right_image)
 
 frog_left_image = pyglet.image.load('images/frog_left.png')
-frog_left_image.texture.width = FROG_WIDTH
-frog_left_image.texture.height = FROG_HEIGHT
 
 princess_image = pyglet.image.load('images/princess_right.png')
-princess_image.texture.width = PRINCESS_WIDTH
-princess_image.texture.height = PRINCESS_HEIGHT
 princess_right = pyglet.sprite.Sprite(princess_image)
 
 princess_image = pyglet.image.load('images/princess_left.png')
-princess_image.texture.width = PRINCESS_WIDTH
-princess_image.texture.height = PRINCESS_HEIGHT
 princess_left = pyglet.sprite.Sprite(princess_image)
 
 princess_image = pyglet.image.load('images/princess_frog_right.png')
-princess_image.texture.width = PRINCESS_WIDTH
-princess_image.texture.height = PRINCESS_HEIGHT
 princess_frog_right = pyglet.sprite.Sprite(princess_image)
 
 heart_image = pyglet.image.load('images/heart.png')
-heart_image.texture.width = 40
-heart_image.texture.height = 40
 heart = pyglet.sprite.Sprite(heart_image)
 
 donuts_plate_image = pyglet.image.load('images/donuts_plate.png')
-donuts_plate_image.texture.width = 40
-donuts_plate_image.texture.height = 40
 donuts_plate = pyglet.sprite.Sprite(donuts_plate_image)
 
 gotcha_image = pyglet.image.load('images/gotcha.png')
-gotcha_image.texture.width = 400
-gotcha_image.texture.height = 320
 gotcha = pyglet.sprite.Sprite(gotcha_image)
 
 menu_image = pyglet.image.load('images/menu.jpg')
